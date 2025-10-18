@@ -1,0 +1,5 @@
+package in.vyashivam.librarymanager.model;
+
+public enum Genre {
+    FICTION, NON_FICTION, SCIENCE, HISTORY, BIOGRAPHY, FANTASY, ROMANCE, MYSTERY, SELF_HELP, EDUCATIONAL;
+}
