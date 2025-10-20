@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -42,7 +41,6 @@ public class Member {
     @Column(name = "Membership Start Date")
     private LocalDate membershipStartDate;
 
-    @Future(message = "Membership end date cannot be of past. It has to be minimum of 14 days from the date of start.")
     @Column(name = "Membership End Date")
     private LocalDate membershipEndDate;
 
