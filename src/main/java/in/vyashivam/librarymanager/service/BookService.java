@@ -53,7 +53,7 @@ public class BookService implements IBookService{
         Optional<Book> optional = bookRepo.findById(id);
         if (optional.isPresent()) {
             bookRepo.deleteById(id);
-            return "Book with the given id" + id + " has been updated successfully!";
+            return "Book with the given id" + id + " has been deleted successfully!";
         }
         throw new BookNotFoundException("Book with given id is not available. Please try again.");
     }
