@@ -4,7 +4,7 @@ import in.vyashivam.librarymanager.model.Member;
 import java.util.List;
 
 public interface IMemberService {
-    Member registerMember(Member member);
+    String registerMember(Member member);
     List<Member> getMembers();
     String updateMemberDetails(Member member);
     Member getMemberById(Long id);
