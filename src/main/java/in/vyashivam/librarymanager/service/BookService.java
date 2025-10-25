@@ -37,7 +37,6 @@ public class BookService implements IBookService{
         throw new BookNotFoundException("Book with given id is not available. Please try again.");
     }
 
-
     @Override
     public String updateBookDetails(Book book) {
         Optional<Book> optional = bookRepo.findById(book.getBookId());
