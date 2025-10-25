@@ -8,9 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +26,11 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Member ID")
     private Long memberId;
+
+    @Column(name = "Member name")
+    @NotBlank(message = "Name cannot be empty, name must be there")
+    @Size(min = 0, max = 50)
+    private String memberName;
 
     @Column(name = "Email ID")
     @Email(message = "Please enter a valid email id.")
