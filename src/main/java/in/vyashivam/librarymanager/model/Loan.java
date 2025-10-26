@@ -40,7 +40,13 @@ public class Loan {
     @Column(name = "Return Status")
     private ReturnStatus status;
 
-    @Column(name = "Fine Amount")
+    @Column(name = "Rent Fees", columnDefinition = "DECIMAL(10, 2)")
+    private BigDecimal rentFees = BigDecimal.valueOf(500.00);
+
+    @Column(name = "Fine Amount", columnDefinition = "DECIMAL(10, 2) DEFAULT 0.00")
     @Min(value = 0)
-    private BigDecimal fineAmount;
+    private BigDecimal fineAmount = BigDecimal.ZERO;
+
+    @Column(name = "Total Amount", columnDefinition = "DECIMAL(10, 2)")
+    private BigDecimal totalAmount;
 }
