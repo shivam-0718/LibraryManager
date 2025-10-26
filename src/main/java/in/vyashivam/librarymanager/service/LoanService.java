@@ -8,7 +8,10 @@ import in.vyashivam.librarymanager.repo.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,6 +33,11 @@ public class LoanService implements ILoanService{
     @Autowired
     public void setLoanRepo(LoanRepository loanRepo) {
         this.loanRepo = loanRepo;
+    }
+
+    @Override
+    public List<Loan> getAllLoans() {
+        return loanRepo.findAll();
     }
 
     @Override
@@ -66,13 +74,49 @@ public class LoanService implements ILoanService{
         newLoan.setStatus(ReturnStatus.ISSUED);
         newLoan.setMember(member);
         newLoan.setBook(book);
+        newLoan.setRentFees(BigDecimal.valueOf(500.00));
 
         int recentAvailableCopies = book.getAvailableCopies() - 1;
         book.setAvailableCopies(recentAvailableCopies);
         bookRepo.save(book);
 
         loanRepo.save(newLoan);
-
         return newLoan;
+    }
+
+    @Override
+    @Transactional
+    public Loan returnABook(Long loanId) {
+        Optional<Loan> loanInfo = loanRepo.findById(loanId);
+        if(loanInfo.isEmpty()) {
+            throw new LoanNotFoundException("Loan with the given id does not exist.");
+        }
+
+        Loan loanDetails = loanInfo.get();
+
+        if(loanDetails.getStatus().equals(ReturnStatus.RETURNED)) {
+            throw new BookAlreadyReturnedException("Book has been already returned.");
+        }
+        else if(loanDetails.getStatus().equals(ReturnStatus.ISSUED)) {
+            loanDetails.setReturnDate(LocalDate.now());
+
+            LocalDate dueDate = loanDetails.getDueDate();
+            LocalDate returnDate = loanDetails.getReturnDate();
+
+            if(returnDate.isBefore(dueDate)) {
+                loanDetails.setFineAmount(BigDecimal.ZERO);
+                loanDetails.setTotalAmount(loanDetails.getRentFees().add(loanDetails.getFineAmount()));
+                loanDetails.setStatus(ReturnStatus.RETURNED);
+            } else {
+                int daysBetween = (int) ChronoUnit.DAYS.between(returnDate, dueDate);
+                loanDetails.setFineAmount(BigDecimal.valueOf(30.00).multiply(BigDecimal.valueOf(daysBetween)));
+                loanDetails.setTotalAmount(loanDetails.getRentFees().add(loanDetails.getFineAmount()));
+                loanDetails.setStatus(ReturnStatus.RETURNED_WITH_FINE);
+            }
+
+            loanRepo.save(loanDetails);
+        }
+
+        return loanDetails;
     }
 }
