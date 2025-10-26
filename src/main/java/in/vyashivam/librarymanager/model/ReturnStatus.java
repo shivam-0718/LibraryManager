@@ -1,5 +1,5 @@
 package in.vyashivam.librarymanager.model;
 
 public enum ReturnStatus {
-    ISSUED, RETURNED, OVERDUE, LOST;
+    ISSUED, RETURNED, RETURNED_WITH_FINE;
 }
