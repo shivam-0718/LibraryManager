@@ -42,12 +42,14 @@ public class LoanController {
                 MemberId: %s
                 MemberShip Status: %s
                 Loan Id: %s
+                Book Id: %s
                 Book Title: %s
                 Issue Date: %s
                 Return Date: %s
                 
                 """, member.getMemberName(), memberId,
-                member.getMembershipStatus(), loan.getLoanId() , book.getTitle(),
+                member.getMembershipStatus(), loan.getLoanId(),
+                book.getBookId(), book.getTitle(),
                 loan.getIssueDate(), loan.getDueDate());
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -64,6 +66,7 @@ public class LoanController {
                 Name: %s
                 MemberId: %s
                 Loan Id: %s
+                Book Id: %s
                 Book Title: %s
                 Issue Date: %s
                 Return Date: %s
@@ -73,7 +76,7 @@ public class LoanController {
                 
                 Thank you! Please visit again!
                 """, completedLoan.getMember().getMemberName(), completedLoan.getMember().getMemberId(),
-                loanId, completedLoan.getBook().getTitle(), completedLoan.getIssueDate(),
+                loanId, completedLoan.getBook().getBookId(), completedLoan.getBook().getTitle(), completedLoan.getIssueDate(),
                 completedLoan.getReturnDate(), completedLoan.getDueDate(), completedLoan.getFineAmount(),
                 completedLoan.getTotalAmount());
 
