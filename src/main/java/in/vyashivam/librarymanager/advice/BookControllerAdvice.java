@@ -1,5 +1,7 @@
 package in.vyashivam.librarymanager.advice;
 
+import in.vyashivam.librarymanager.exception.BookAlreadyReturnedException;
+import in.vyashivam.librarymanager.exception.BookIsUnavailableException;
 import in.vyashivam.librarymanager.exception.BookNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,18 @@ public class BookControllerAdvice {
     public ResponseEntity<ErrorDetails> handleBookNotFoundException(BookNotFoundException bnf) {
         ErrorDetails error = new ErrorDetails(bnf.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookIsUnavailableException.class)
+    public ResponseEntity<ErrorDetails> handleBookIsUnavailableException(BookIsUnavailableException buna) {
+        ErrorDetails error = new ErrorDetails(buna.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookAlreadyReturnedException.class)
+    public ResponseEntity<ErrorDetails> handleBookAlreadyReturnedException(BookAlreadyReturnedException bar) {
+        ErrorDetails error = new ErrorDetails(bar.getMessage(), LocalDateTime.now());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)
