@@ -94,6 +94,12 @@ public class LoanService implements ILoanService{
 
         Loan loanDetails = loanInfo.get();
 
+        Optional<Book> givenBook = bookRepo.findById(loanDetails.getBook().getBookId());
+        Book rentedBook = null;
+        if(givenBook.isPresent()) {
+            rentedBook = givenBook.get();
+        }
+
         if(loanDetails.getStatus().equals(ReturnStatus.RETURNED)) {
             throw new BookAlreadyReturnedException("Book has been already returned.");
         }
@@ -115,6 +121,10 @@ public class LoanService implements ILoanService{
             }
 
             loanRepo.save(loanDetails);
+
+            int recentAvailableCopies = rentedBook.getAvailableCopies() + 1;
+            rentedBook.setAvailableCopies(recentAvailableCopies);
+            bookRepo.save(rentedBook);
         }
 
         return loanDetails;
