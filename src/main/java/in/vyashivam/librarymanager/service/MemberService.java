@@ -57,8 +57,8 @@ public class MemberService implements IMemberService {
         Optional<Member> optional = memberRepo.findById(id);
         if (optional.isPresent()) {
             memberRepo.deleteById(id);
-            return "Book with the given id" + id + " has been deleted successfully!";
+            return "Member with the given id" + id + " has been deleted successfully!";
         }
-        throw new BookNotFoundException("Book with given id is not available. Please try again.");
+        throw new MemberNotFoundException("Member with given id is not available in the database. Please try again.");
     }
 }
