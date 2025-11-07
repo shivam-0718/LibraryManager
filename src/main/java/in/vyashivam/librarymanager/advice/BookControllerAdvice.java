@@ -29,10 +29,4 @@ public class BookControllerAdvice {
         ErrorDetails error = new ErrorDetails(bar.getMessage(), LocalDateTime.now());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetails> handleOtherException(Exception e) {
-        ErrorDetails error = new ErrorDetails(e.getMessage(), LocalDateTime.now());
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 }
